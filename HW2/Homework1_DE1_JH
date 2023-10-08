@@ -1,0 +1,57 @@
+/* Homework 1 DE 2023 Jana Hochel
+Upload the solution of exercise 1-6 to your GitHub repo in a folder called HW2
+#Make sure to submit both the SQL statements and answers to the questions
+#The required data format for submission is a .sql file
+#Submit GitHub repo link to moodle when you are ready
+*/
+
+Use birdstrikes;
+
+#Exercise 1
+#Based on the previous chapter, create a table called “employee” with two columns: “id” and “employee_name”. NULL values should not be accepted for these 2 columns.
+CREATE TABLE employee
+(id INTEGER NOT NULL,
+employee_name VARCHAR(16) NOT NULL);
+#Answer 1: Table has been created.
+
+#Exercise 2
+#What state figures in the 145th line of our database?
+SELECT *  FROM birdstrikes LIMIT 144, 1;
+#Answer 2: Tennesee
+
+
+#Exercise 3
+#What is flight_date of the latest birstrike in this database?
+SELECT * from birdstrikes as b ORDER BY b.flight_date DESC LIMIT 1;
+#Answer 3: 2000-04-18
+
+#Exercise4
+#What was the cost of the 50th most expensive damage?
+SELECT DISTINCT (cost) from birdstrikes ORDER BY cost DESC LIMIT 49,1;
+#Answer 4: 5345
+
+
+#Exercise5
+#What state figures in the 2nd record, if you filter out all records which have no state and no bird_size specified?
+#Mine:
+SELECT (state) FROM birdstrikes WHERE state!='' AND state IS NOT NULL AND bird_size!='' AND bird_size IS NOT NULL LIMIT 1,1;
+#Formated:
+SELECT state FROM birdstrikes
+    WHERE state IS NOT NULL AND state != ''
+    AND bird_size IS NOT NULL AND bird_size != ''
+    LIMIT 1,1;
+#Answer 5: Colorado
+
+#Exercise6
+#How many days elapsed between the current date and the flights happening in week 52, for incidents from Colorado? (Hint: use NOW, DATEDIFF, WEEKOFYEAR)
+#Mine
+SELECT DATEDIFF(NOW(), flight_date) AS DAYS
+FROM birdstrikes
+WHERE state = 'Colorado' AND WEEKOFYEAR(flight_date) = 52;
+#Correct:
+SELECT DATEDIFF(tab.flight_date, NOW()) FROM birdstrikes as tab WHERE WEEKOFYEAR(tab.flight_date) =52 AND state="Colorado"
+
+/*Answer 6:
+Mine 8681
+Correct: 7576*/
+
